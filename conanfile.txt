@@ -1,5 +1,5 @@
 [requires]
-libwrapper/1.0.0
+libbar/1.0.0
 
 [generators]
 CMakeDeps

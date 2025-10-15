@@ -27,11 +27,11 @@ jobs:
       - name: Export libfoo
         run: conan export libfoo
 
-      - name: Create libwrapper
-        run: conan create libwrapper -o libfoo/*:with_v2=True --build=missing
+      - name: Create libbar
+        run: conan create libbar -o libfoo/*:single_precision=True --build=missing
 
       - name: Install dependencies for the project
-        run: conan install . --build=missing -o libfoo/*:with_v2=False
+        run: conan install . --build=missing -o libfoo/*:single_precision=False
 
       - name: Configure CMake
         run: cmake --fresh --preset conan-release

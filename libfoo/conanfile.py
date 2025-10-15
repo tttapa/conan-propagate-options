@@ -7,10 +7,10 @@ class LibFooConan(ConanFile):
     name = "libfoo"
     version = "1.0.0"
     package_type = "library"
-    options = {"shared": [True, False], "fPIC": [True, False], "with_v2": [True, False]}
-    default_options = {"shared": False, "fPIC": True, "with_v2": False}
+    options = {"shared": [True, False], "fPIC": [True, False], "single_precision": [True, False]}
+    default_options = {"shared": False, "fPIC": True, "single_precision": False}
     settings = "os", "arch", "compiler", "build_type"
-    exports_sources = "src/*", "include/*", "CMakeLists.txt"
+    exports_sources = "*.hpp", "*.cpp", "CMakeLists.txt"
     generators = ("CMakeDeps",)
 
     def layout(self):
@@ -18,7 +18,7 @@ class LibFooConan(ConanFile):
 
     def generate(self):
         tc = CMakeToolchain(self)
-        tc.variables["FOO_WITH_V2"] = self.options.with_v2
+        tc.variables["FOO_WITH_SINGLE_PRECISION"] = self.options.single_precision
         tc.generate()
 
     def build(self):

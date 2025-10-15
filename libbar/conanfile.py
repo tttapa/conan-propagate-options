@@ -3,14 +3,14 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
 
 
-class LibWrapperConan(ConanFile):
-    name = "libwrapper"
+class LibBarConan(ConanFile):
+    name = "libbar"
     version = "1.0.0"
     package_type = "library"
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
     settings = "os", "arch", "compiler", "build_type"
-    exports_sources = "src/*", "include/*", "CMakeLists.txt"
+    exports_sources = "*.hpp", "*.cpp", "CMakeLists.txt"
     generators = ("CMakeDeps",)
 
     def requirements(self):
@@ -34,4 +34,4 @@ class LibWrapperConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.set_property("cmake_find_mode", "none")
-        self.cpp_info.builddirs.append(os.path.join("lib", "cmake", "libwrapper"))
+        self.cpp_info.builddirs.append(os.path.join("lib", "cmake", "libbar"))
