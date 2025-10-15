@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1)
+cmake_minimum_required(VERSION 3.28...4.1)
 project(libfoo LANGUAGES CXX)
 
 option(FOO_WITH_V2 "Enable foo_v2" OFF)
