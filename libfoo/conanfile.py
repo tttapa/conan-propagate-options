@@ -1,25 +1,21 @@
 import os
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.cmake import CMake, cmake_layout
 
 
 class LibFooConan(ConanFile):
     name = "libfoo"
     version = "1.0.0"
     package_type = "library"
-    options = {"shared": [True, False], "fPIC": [True, False], "single_precision": [True, False]}
-    default_options = {"shared": False, "fPIC": True, "single_precision": False}
+    options = {"shared": [True, False], "fPIC": [True, False]}
+    default_options = {"shared": False, "fPIC": True}
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "*.hpp", "*.cpp", "CMakeLists.txt"
-    generators = ("CMakeDeps",)
+    generators = "CMakeDeps", "CMakeToolchain"
+    build_requires = "cmake/[>=3.28 <5]"
 
     def layout(self):
         cmake_layout(self)
-
-    def generate(self):
-        tc = CMakeToolchain(self)
-        tc.variables["FOO_WITH_SINGLE_PRECISION"] = self.options.single_precision
-        tc.generate()
 
     def build(self):
         cmake = CMake(self)

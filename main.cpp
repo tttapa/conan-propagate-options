@@ -1,4 +1,4 @@
 #include <bar.hpp>
-#include <iostream>
+#include <foo.hpp>
 
-int main() { std::cout << bar(42) << "\n"; }
+int main() { return bar_get_foo() == foo ? 0 : 1; }

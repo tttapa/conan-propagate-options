@@ -1,6 +1,6 @@
 import os
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, cmake_layout
+from conan.tools.cmake import CMake, cmake_layout
 
 
 class LibBarConan(ConanFile):
@@ -11,17 +11,14 @@ class LibBarConan(ConanFile):
     default_options = {"shared": False, "fPIC": True}
     settings = "os", "arch", "compiler", "build_type"
     exports_sources = "*.hpp", "*.cpp", "CMakeLists.txt"
-    generators = ("CMakeDeps",)
+    generators = "CMakeDeps", "CMakeToolchain"
+    build_requires = "cmake/[>=3.28 <5]"
 
     def requirements(self):
         self.requires("libfoo/1.0.0", transitive_headers=True)
 
     def layout(self):
         cmake_layout(self)
-
-    def generate(self):
-        tc = CMakeToolchain(self)
-        tc.generate()
 
     def build(self):
         cmake = CMake(self)

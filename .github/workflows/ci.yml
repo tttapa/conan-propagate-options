@@ -5,7 +5,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        shared-1: ['True', 'False']
+        shared-2: ['True', 'False']
+      fail-fast: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,10 +21,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake make g++
-          pip install conan==2.21.0
+        run: pip install conan==2.21.0
 
       - name: Detect Conan profile
         run: conan profile detect
@@ -28,13 +30,16 @@ jobs:
         run: conan export libfoo
 
       - name: Create libbar
-        run: conan create libbar -o libfoo/*:single_precision=True --build=missing
+        run: conan create libbar -o libfoo/*:shared=${{ matrix.shared-1 }} --build=missing
 
       - name: Install dependencies for the project
-        run: conan install . --build=missing -o libfoo/*:single_precision=False
+        run: conan install . --build=missing -o libfoo/*:shared=${{ matrix.shared-2 }}
 
       - name: Configure CMake
-        run: cmake --fresh --preset conan-release
+        run: cmake --fresh --preset conan-default
 
       - name: Build project
         run: cmake --build --preset conan-release
+
+      - name: Test project
+        run: ctest -V --preset conan-release
